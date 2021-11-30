@@ -1,0 +1,42 @@
+accelerator:
+  displayName: tanzu-dotnet-upgrade-accelerator
+  description: Sample .Net Core Application with Tilt Integration For Upgrading Existing Applications.
+  iconUrl: https://seeklogo.com/images/C/c-sharp-c-logo-02F17714BA-seeklogo.com.png
+  tags:
+  - dotnet
+  - C#
+  options:
+  - name: repositoryPrefix
+    inputType: text
+    label: Prefix for the container image repository
+    defaultValue: your-registry.io/project
+    required: true
+  - name: gitRepository
+    inputType: text
+    label: Git Repository this artifact will be stored in. 
+    defaultValue: https://github.com/jeffellin/tanzu-dotnet-upgrade-accelerator
+    required: true
+engine:
+  merge:
+  - include: [ "**/*" ]
+    exclude: [ "k8s-resource.yaml","config/*.yaml", "Tiltfile", "README.md", "catalog/*.yaml" ]
+  - include: [ "config/*.yaml", "Tiltfile" ]
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: https://github.com
+        with: "#gitRepository"
+    - type: ReplaceText
+      substitutions:
+      - text: tanzu-dotnet
+        with: "#artifactId"
+    - type: ReplaceText
+      substitutions:
+      - text: your-registry.io/project
+        with: "#repositoryPrefix"
+  - include: [ "README.md" ]
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: tanzu-dotnet
+        with: "#artifactId"

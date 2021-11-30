@@ -1,0 +1,9 @@
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Accelerator
+metadata:
+  name: tanzu-dotnet-upgrade-accelerator
+spec:
+  git:
+    url: https://github.com/jeffellin/tanzu-dotnet-upgrade-accelerator
+    ref:
+      branch: main
